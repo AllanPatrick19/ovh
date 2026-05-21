@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oficina de Visualização Holográfica® | Elainne Ourives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --bg: #0A0A0A;
+    --txt: #F0EAD6;
+    --muted: #8A8070;
+    --card: #0F0D08;
+    --card2: #0D0B07;
+    --border: #2A2518;
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-serif: 'Playfair Display', Georgia, serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--txt); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+  img { max-width: 100%; display: block; }
+  a { text-decoration: none; }
+
+  /* TOP BAR */
+  .topbar { background: var(--gold); color: var(--bg); text-align: center; padding: 10px 16px; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+  .countdown-wrap { display: inline-flex; align-items: center; gap: 4px; font-family: monospace; font-weight: 800; }
+  .cd-unit { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; }
+  .cd-num { font-size: 15px; }
+  .cd-lbl { font-size: 9px; opacity: 0.7; }
+  .cd-sep { font-size: 14px; margin: 0 1px; }
+
+  /* LAYOUT */
+  .container { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+  .container-wide { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 64px 0; }
+  .section-dark { background: var(--card2); }
+  .section-card { background: var(--card); }
+  .divider { text-align: center; color: var(--gold); font-size: 18px; letter-spacing: 12px; padding: 24px 0; }
+
+  /* TYPOGRAPHY */
+  h1 { font-family: var(--font-serif); font-size: clamp(2rem, 6vw, 3.75rem); line-height: 1.15; color: var(--txt); }
+  h2 { font-family: var(--font-serif); font-size: clamp(1.5rem, 4vw, 2rem); color: var(--txt); }
+  h3 { font-family: var(--font-serif); font-size: 1.25rem; color: var(--txt); }
+  p { color: var(--muted); line-height: 1.8; }
+  .tag { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); }
+  .gold { color: var(--gold); }
+  .txt { color: var(--txt); }
+  .muted { color: var(--muted); }
+
+  /* HERO */
+  .hero { text-align: center; padding: 80px 0 60px; }
+  .hero h1 { margin-bottom: 28px; }
+  .hero-sub { font-size: 1.1rem; color: var(--muted); margin-bottom: 28px; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .hero-meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 36px; font-size: 13px; color: var(--muted); }
+
+  /* CTA */
+  .cta-btn { display: inline-block; background: var(--gold); color: var(--bg); font-weight: 700; font-size: 16px; padding: 20px 40px; border-radius: 2px; transition: opacity 0.2s; cursor: pointer; border: none; text-align: center; }
+  .cta-btn:hover { opacity: 0.88; }
+  .cta-full { display: block; width: 100%; text-align: center; }
+  .cta-sub { font-size: 13px; color: var(--muted); margin-top: 10px; text-align: center; }
+
+  /* GUARANTEE */
+  .guarantee-badge { font-size: 13px; color: var(--muted); margin-top: 14px; text-align: center; }
+
+  /* PAIN */
+  .pain-block p { font-size: 1.05rem; margin-bottom: 20px; }
+  .pain-highlight { font-size: 1.2rem !important; font-weight: 600; color: var(--txt) !important; }
+
+  /* BLOCKQUOTE */
+  blockquote { border-left: 3px solid var(--gold); padding-left: 24px; font-family: var(--font-serif); font-style: italic; font-size: 1.5rem; line-height: 1.5; color: var(--gold); margin: 32px 0; }
+  blockquote footer { font-family: var(--font-sans); font-style: normal; font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+  /* STATEMENT */
+  .statement-row { font-size: 1.25rem; text-align: center; margin-bottom: 8px; color: var(--txt); }
+  .statement-bold { font-weight: 700; }
+
+  /* TOOLS */
+  .tool-item { border-left: 2px solid var(--gold); padding-left: 24px; margin-bottom: 36px; }
+  .tool-num { font-size: 11px; font-family: monospace; color: var(--gold); margin-bottom: 4px; }
+  .tool-name { font-family: var(--font-serif); font-size: 1.2rem; color: var(--txt); margin-bottom: 8px; }
+  .tool-desc { font-size: 15px; color: var(--muted); margin-bottom: 8px; }
+  .tool-result { font-size: 13px; font-weight: 600; color: var(--gold); }
+
+  /* LAWS GRID */
+  .laws-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .law-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 14px; }
+  .law-num { font-size: 10px; font-family: monospace; color: var(--gold); margin-bottom: 4px; }
+  .law-name { font-size: 13px; font-weight: 600; color: var(--txt); margin-bottom: 4px; }
+  .law-desc { font-size: 12px; color: var(--muted); }
+
+  /* SCHEDULE */
+  .schedule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .schedule-card { background: var(--card); border-radius: 4px; padding: 24px; }
+  .schedule-card.highlight { border: 1px solid var(--gold); }
+  .schedule-card.normal { border: 1px solid var(--border); }
+  .schedule-day { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+  .schedule-title { font-family: var(--font-serif); font-size: 1.1rem; color: var(--txt); margin-bottom: 4px; }
+  .schedule-time { font-size: 11px; color: var(--muted); margin-bottom: 16px; }
+  .schedule-list { list-style: none; }
+  .schedule-list li { font-size: 13px; color: var(--muted); margin-bottom: 8px; display: flex; gap: 8px; }
+  .schedule-list li::before { content: '→'; color: var(--gold); flex-shrink: 0; }
+
+  /* BIO */
+  .bio-avatar { width: 96px; height: 96px; border-radius: 50%; background: #1A1610; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-family: var(--font-serif); font-size: 1.25rem; color: var(--gold); margin: 0 auto 20px; }
+  .bio-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; text-align: center; margin-top: 36px; }
+  .bio-stat-num { font-family: var(--font-serif); font-size: 1.5rem; color: var(--gold); }
+  .bio-stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .bio-placeholder { background: #1A1610; border: 1px dashed var(--border); border-radius: 4px; padding: 16px; font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 24px; }
+
+  /* VALUE STACK */
+  .stack-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 16px 0; border-bottom: 1px solid var(--border); gap: 16px; }
+  .stack-item { font-size: 14px; color: var(--muted); flex: 1; }
+  .stack-val { font-size: 13px; font-family: monospace; color: var(--gold); white-space: nowrap; }
+  .price-box { background: var(--card); border: 1px solid var(--gold); border-radius: 4px; padding: 40px 32px; text-align: center; }
+  .price-old { font-size: 1.25rem; text-decoration: line-through; color: var(--muted); margin-bottom: 4px; }
+  .price-main { font-family: var(--font-serif); font-size: 3.5rem; color: var(--gold); line-height: 1; margin-bottom: 6px; }
+  .price-install { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
+  .guarantee-box { background: #12100A; border: 1px solid var(--border); border-radius: 4px; padding: 16px; margin-top: 20px; text-align: left; }
+  .guarantee-title { font-size: 14px; font-weight: 600; color: var(--txt); margin-bottom: 6px; }
+  .guarantee-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .why-box { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 20px; margin-top: 20px; font-size: 14px; }
+
+  /* QUALIFY */
+  .qualify-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .qualify-title { font-size: 13px; font-weight: 600; letter-spacing: 0.1em; margin-bottom: 20px; }
+  .qualify-list { list-style: none; }
+  .qualify-list li { font-size: 14px; color: var(--muted); margin-bottom: 14px; display: flex; gap: 8px; }
+  .qualify-list.yes li::before { content: '→'; color: var(--gold); flex-shrink: 0; }
+  .qualify-list.no { color: #444; }
+  .qualify-list.no li { color: #444; }
+  .qualify-list.no li::before { content: '✕'; color: #444; flex-shrink: 0; }
+
+  /* FAQ */
+  details { background: var(--card); border: 1px solid var(--border); border-radius: 4px; margin-bottom: 10px; }
+  details summary { padding: 16px; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--txt); display: flex; justify-content: space-between; align-items: center; list-style: none; user-select: none; }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::after { content: '+'; color: var(--gold); font-size: 18px; font-weight: 400; transition: transform 0.2s; }
+  details[open] summary::after { transform: rotate(45deg); }
+  details p { padding: 0 16px 16px; font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+  /* FINAL CTA */
+  .final-cta { text-align: center; padding: 96px 0; }
+  .final-cta h2 { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 20px; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 28px; text-align: center; font-size: 12px; color: #333; }
+  footer a { color: #333; }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .laws-grid { grid-template-columns: 1fr; }
+    .schedule-grid { grid-template-columns: 1fr; }
+    .qualify-grid { grid-template-columns: 1fr; }
+    .bio-stats { grid-template-columns: repeat(2, 1fr); }
+    .hero { padding: 56px 0 40px; }
+    section { padding: 48px 0; }
+    blockquote { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span>🔴 Encerra em:</span>
+  <div class="countdown-wrap" id="countdown">
+    <span class="cd-unit"><span class="cd-num" id="cd-d">00</span><span class="cd-lbl">d</span></span>
+    <span class="cd-sep">:</span>
+    <span class="cd-unit"><span class="cd-num" id="cd-h">00</span><span class="cd-lbl">h</span></span>
+    <span class="cd-sep">:</span>
+    <span class="cd-unit"><span class="cd-num" id="cd-m">00</span><span class="cd-lbl">min</span></span>
+    <span class="cd-sep">:</span>
+    <span class="cd-unit"><span class="cd-num" id="cd-s">00</span><span class="cd-lbl">s</span></span>
+  </div>
+  <span>— Restam 200 vagas</span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <p class="tag" style="margin-bottom: 24px;">Elainne Ourives · Workshop Exclusivo · 08 e 09 de Junho</p>
+    <h1>Sua mente já sabe manifestar. O problema é que ninguém te ensinou a ligar a tela.</h1>
+    <p class="hero-sub" style="margin-top: 28px;">
+      <strong class="gold">Oficina de Visualização Holográfica®</strong> — Em 2 noites ao vivo, você aprende o protocolo baseado em Neurociência e Física Quântica que ativa a visualização — mesmo que você nunca tenha visto nada quando fecha os olhos.
+    </p>
+    <div class="hero-meta">
+      <span>📅 08 e 09 de Junho</span>
+      <span>🕖 19h às 23h</span>
+      <span>⏱ 8h de imersão</span>
+      <span>📺 Ao vivo</span>
+    </div>
+    <a href="https://pay.hub.la/owSQONHEIkZtK1EPuiFN" class="cta-btn">✦ QUERO ATIVAR MINHA TELA MENTAL ✦</a>
+    <p class="cta-sub">R$ 47,90 · ou 11x de R$ 5,16 · Menos que um café por dia</p>
+    <p class="guarantee-badge">🛡️ Garantia Incondicional · 7 dias · 100% do valor de volta, sem pergunta</p>
+  </div>
+</section>
+
+<div class="divider">✦ ✦ ✦</div>
+
+<!-- LEAD -->
+<section>
+  <div class="container" style="text-align: center;">
+    <p style="font-size: 1.3rem; line-height: 1.8; color: var(--txt); margin-bottom: 20px;">
+      Se você fecha os olhos para visualizar e nada aparece — nenhuma imagem, nenhuma clareza, só escuridão ou borrão — este workshop foi criado exatamente para você.
+    </p>
+    <p style="font-size: 1.05rem;">
+      Não é falta de fé. Não é falta de esforço. Não é porque não é para você.<br />
+      <strong class="txt">É porque ninguém te ensinou a parte técnica.</strong>
+    </p>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section class="section-dark">
+  <div class="container">
+    <h2 style="text-align: center; margin-bottom: 40px; color: var(--gold);">O que está acontecendo com você</h2>
+    <div class="pain-block">
+      <p>Você tentou. De verdade.</p>
+      <p>Vision board na parede. Afirmações toda manhã. Meditações guiadas. Talvez até outros cursos de manifestação. E quando chegava a hora de visualizar… nada.</p>
+      <p>Escuridão. Borrão. Uma imagem fragmentada que some antes de você conseguir segurá-la por mais de três segundos.</p>
+      <p>E aí vem o pior: você começa a se perguntar se o problema é você.</p>
+      <p>Você vê outras pessoas falando que manifestaram emprego novo, relacionamento, saúde — e se pergunta: <em class="txt">"Será que funciona para todo mundo, menos para mim?"</em></p>
+      <p>Cada tentativa frustrada corrói mais um pedaço da sua crença. Você começa a achar que não tem o dom. Que não merece. Que não é para você.</p>
+      <p class="pain-highlight">Mas e se eu te disser que você nunca teve um problema com visualização? Você tinha um problema de instrução.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REFRAME -->
+<section>
+  <div class="container" style="text-align: center;">
+    <p class="tag" style="margin-bottom: 32px;">✦ A verdade que os outros métodos não te contam ✦</p>
+    <p style="font-size: 1.1rem; margin-bottom: 24px;">
+      99% dos cursos de manifestação te ensinam <strong class="txt">o quê</strong> fazer. Nenhum te ensina <strong class="txt">como ligar a tela.</strong>
+    </p>
+    <blockquote>
+      "É como tentar ouvir uma estação de rádio sem sintonizar na frequência certa. O sinal existe. A música existe. Você só não sabia onde girar o botão."
+    </blockquote>
+    <div style="margin: 28px 0;">
+      <p class="statement-row">Você não precisa de mais fé.</p>
+      <p class="statement-row">Você não precisa de mais afirmações.</p>
+      <p class="statement-row statement-bold" style="color: var(--txt);">Você precisa de técnica.</p>
+    </div>
+    <div style="border-top: 1px solid var(--border); padding-top: 40px; margin-top: 40px;">
+      <h2 style="margin-bottom: 16px;">A arquitetura da sua realidade</h2>
+      <p style="margin-bottom: 16px;">Visualização não é dom. É uma ciência com leis específicas — e ferramentas práticas que, uma vez dominadas, tornam a manifestação uma consequência lógica, não um milagre aleatório.</p>
+      <p style="margin-bottom: 32px;">A <strong class="txt">Visualização Holográfica®</strong> não é mais um método de "pense positivo". É um protocolo que atua diretamente no seu sistema nervoso — o mesmo sistema que bloqueia sua tela quando você está em estado de estresse, dúvida ou descrença. Quando você aprende a operar sua mente corretamente, a visualização não é um esforço. É uma consequência natural.</p>
+      <blockquote style="text-align: left;">
+        "Você não apenas aprende a visualizar. Você se torna o arquiteto consciente da sua própria realidade."
+        <footer>— Elainne Ourives</footer>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="section-dark">
+  <div class="container">
+    <h2 style="text-align: center; margin-bottom: 8px;">As 5 Ferramentas do Arquiteto da Realidade</h2>
+    <p style="text-align: center; font-size: 14px; margin-bottom: 48px;">Não são dicas. São ferramentas práticas, guiadas ao vivo.</p>
+    <div class="tool-item">
+      <p class="tool-num">01</p>
+      <h3 class="tool-name">HoloSWOT® Visual</h3>
+      <p class="tool-desc">Você mapeia com precisão cirúrgica exatamente quais crenças estão bloqueando sua tela — não por suposição, por exercício guiado ao vivo.</p>
+      <p class="tool-result">✦ Você sai sabendo exatamente o que estava te travando — e como soltar.</p>
+    </div>
+    <div class="tool-item">
+      <p class="tool-num">02</p>
+      <h3 class="tool-name">SMART Holográfico®</h3>
+      <p class="tool-desc">Seus objetivos se tornam imagens mentais tão vívidas, tão carregadas de sensação, que seu cérebro começa a tratá-las como memórias reais — não como fantasias distantes.</p>
+      <p class="tool-result">✦ Procrastinação vira foco. Dúvida vira direção.</p>
+    </div>
+    <div class="tool-item">
+      <p class="tool-num">03</p>
+      <h3 class="tool-name">Painel NeuroVisual®</h3>
+      <p class="tool-desc">Você aprende a editar suas próprias imagens mentais: ajustar brilho, cor, distância e emoção. Você para de ser espectador da sua mente e vira o diretor.</p>
+      <p class="tool-result">✦ Você nunca mais vai ser refém das suas memórias.</p>
+    </div>
+    <div class="tool-item">
+      <p class="tool-num">04</p>
+      <h3 class="tool-name">Imersão NeuroVisual 10D®</h3>
+      <p class="tool-desc">A técnica de visualização mais profunda que você já vai experienciar. Após ela, seu corpo e sua mente passam a agir como se o que você deseja já tivesse acontecido.</p>
+      <p class="tool-result">✦ Seu sistema nervoso acredita que o sonho já é real.</p>
+    </div>
+    <div class="tool-item" style="margin-bottom: 0;">
+      <p class="tool-num">05</p>
+      <h3 class="tool-name">Instâncias da Mente®</h3>
+      <p class="tool-desc">Você aprende a entrar no sonho para sentir a emoção — e sair para ver a estratégia. O segredo de quem transforma desejo em ação sem travar emocionalmente.</p>
+      <p class="tool-result">✦ Paralisia emocional vira ação inteligente e inspirada.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LAWS -->
+<section>
+  <div class="container">
+    <h2 style="text-align: center; margin-bottom: 8px;">As 10 Leis da Visualização Holográfica®</h2>
+    <p style="text-align: center; font-size: 14px; margin-bottom: 40px;">O sistema operacional completo da sua mente.</p>
+    <div class="laws-grid">
+      <div class="law-card"><p class="law-num">01</p><p class="law-name">Lei da Cromática Quântica®</p><p class="law-desc">As cores certas para a frequência de cada objetivo</p></div>
+      <div class="law-card"><p class="law-num">02</p><p class="law-name">Lei da Imagem Terapêutica®</p><p class="law-desc">Imagens simbólicas de cura e restauração</p></div>
+      <div class="law-card"><p class="law-num">03</p><p class="law-name">Lei da Faculdade Neuroplástica®</p><p class="law-desc">Expansão da capacidade de criar hologramas complexos</p></div>
+      <div class="law-card"><p class="law-num">04</p><p class="law-name">Lei da Submodalidade Dominante®</p><p class="law-desc">Como fazer seu cérebro aceitar o holograma como real</p></div>
+      <div class="law-card"><p class="law-num">05</p><p class="law-name">Lei da Perspectiva Quântica®</p><p class="law-desc">Sentir a conquista e estruturar os próximos passos</p></div>
+      <div class="law-card"><p class="law-num">06</p><p class="law-name">Lei da Distância Holográfica®</p><p class="law-desc">Trazer o futuro perto · Empurrar o passado para longe</p></div>
+      <div class="law-card"><p class="law-num">07</p><p class="law-name">Lei do Contraste Vibracional®</p><p class="law-desc">Neutralizar medos · Amplificar desejos</p></div>
+      <div class="law-card"><p class="law-num">08</p><p class="law-name">Lei do Ensaio Neurobótico®</p><p class="law-desc">Praticar a vitória até o sucesso virar reflexo</p></div>
+      <div class="law-card"><p class="law-num">09</p><p class="law-name">Lei da Ressonância Cardíaca®</p><p class="law-desc">Projetar sonhos a partir do campo do coração</p></div>
+      <div class="law-card"><p class="law-num">10</p><p class="law-name">Lei do Ponto Zero®</p><p class="law-desc">Construir com intensidade máxima — e soltar com confiança</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="section-dark">
+  <div class="container">
+    <h2 style="text-align: center; margin-bottom: 48px;">Sua imersão de 8 horas</h2>
+    <div class="schedule-grid">
+      <div class="schedule-card highlight">
+        <p class="schedule-day">Dia 1 · 08 de Junho</p>
+        <h3 class="schedule-title">Diagnóstico & Libertação</h3>
+        <p class="schedule-time">19h às 23h · 4 horas ao vivo</p>
+        <ul class="schedule-list">
+          <li>HoloSWOT® ao vivo: mapeamento dos seus bloqueios</li>
+          <li>Os 3 interruptores para ligar sua tela</li>
+          <li>Técnica de limpeza NeuroVisual</li>
+          <li>SMART Holográfico®: seu primeiro holograma real</li>
+          <li>Ancoragem emocional entre os dias</li>
+        </ul>
+      </div>
+      <div class="schedule-card normal">
+        <p class="schedule-day">Dia 2 · 09 de Junho</p>
+        <h3 class="schedule-title">Arquitetura & Manifestação</h3>
+        <p class="schedule-time">19h às 23h · 4 horas ao vivo</p>
+        <ul class="schedule-list">
+          <li>Painel NeuroVisual®: você vira o diretor</li>
+          <li>Imersão 10D ao vivo: a mais profunda</li>
+          <li>Instâncias da Mente®: emoção + estratégia</li>
+          <li>As 10 Leis em prática na sua realidade</li>
+          <li>Seu método para o resto da vida</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BIO -->
+<section>
+  <div class="container" style="text-align: center;">
+    <p class="tag" style="margin-bottom: 28px;">Quem vai estar ao vivo com você</p>
+    <div class="bio-avatar">EO</div>
+    <h2 style="margin-bottom: 6px;">Elainne Ourives</h2>
+    <p class="gold" style="font-size: 13px; margin-bottom: 28px;">Dra em Psicanálise · Formada em Neurociências · Certificada HeartMath®</p>
+    <div class="bio-placeholder">
+      ✏️ <strong>[PREENCHER COM A ELAINNE]</strong> — Sua história pessoal em primeira pessoa: como você também já teve dificuldade com visualização, o que não estava funcionando, e como descobriu esse método. 3-4 parágrafos. Esse é o bloco mais importante para conexão emocional com o avatar.
+    </div>
+    <p style="margin-bottom: 0; font-size: 15px;">Depois de anos pesquisando e aplicando esse protocolo com mais de 200 mil alunos em 50 países, posso te dizer com absoluta certeza: visualização não é dom. É ciência. E ciência se aprende.</p>
+    <div class="bio-stats">
+      <div><p class="bio-stat-num">200mil</p><p class="bio-stat-lbl">alunos</p></div>
+      <div><p class="bio-stat-num">50</p><p class="bio-stat-lbl">países</p></div>
+      <div><p class="bio-stat-num">3mi+</p><p class="bio-stat-lbl">seguidores</p></div>
+      <div><p class="bio-stat-num">11</p><p class="bio-stat-lbl">livros</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE STACK + PRICE -->
+<section class="section-dark">
+  <div class="container">
+    <h2 style="text-align: center; margin-bottom: 8px;">Tudo o que você recebe</h2>
+    <p style="text-align: center; font-size: 14px; margin-bottom: 36px;">✦ Incluso na sua vaga ✦</p>
+    <div style="margin-bottom: 32px;">
+      <div class="stack-row"><span class="stack-item">✦ 8 horas de imersão ao vivo com Elainne Ourives (4h por noite)</span><span class="stack-val">R$ 500</span></div>
+      <div class="stack-row"><span class="stack-item">✦ As 5 Ferramentas Práticas com exercícios guiados ao vivo</span><span class="stack-val">R$ 197</span></div>
+      <div class="stack-row"><span class="stack-item">✦ As 10 Leis da Visualização Holográfica — sistema operacional completo</span><span class="stack-val">R$ 197</span></div>
+      <div class="stack-row"><span class="stack-item">✦ Material de Apoio em PDF com todas as técnicas</span><span class="stack-val">R$ 47</span></div>
+      <div class="stack-row"><span class="stack-item">✦ Certificado de participação ao concluir o workshop</span><span class="stack-val">R$ 47</span></div>
+      <div class="stack-row" style="border-bottom: none;"><span class="stack-item">✦ Grupo exclusivo no WhatsApp com materiais complementares</span><span class="stack-val">R$ 47</span></div>
+    </div>
+    <div class="price-box">
+      <p class="price-old">Valor total: R$ 1.035</p>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 4px;">Seu investimento hoje</p>
+      <p class="price-main">R$ 47,90</p>
+      <p class="price-install">ou 11x de R$ 5,16</p>
+      <a href="https://pay.hub.la/owSQONHEIkZtK1EPuiFN" class="cta-btn cta-full">✦ QUERO ATIVAR MINHA TELA MENTAL ✦</a>
+      <div class="guarantee-box">
+        <p class="guarantee-title">🛡️ Garantia Incondicional de 7 Dias</p>
+        <p class="guarantee-text">Participe das 2 noites ao vivo. Faça os exercícios. Se não valeu cada centavo, me manda um email e devolvo 100% — sem perguntas, sem burocracia. O risco é zero. O que você tem a perder é a escuridão.</p>
+      </div>
+    </div>
+    <div class="why-box">
+      <strong class="txt">Por que R$ 47,90?</strong>
+      <p style="display: inline; color: var(--muted);"> Porque meu objetivo nesta edição é um só: quero que você experiencie o método antes de qualquer outra decisão. Já transformei 200 mil vidas. Sei que quando você sentir sua tela acender pela primeira vez, você vai entender por si mesmo por que esse trabalho muda tudo. O ingresso é deliberadamente acessível. O método é o mesmo para todos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUALIFY -->
+<section>
+  <div class="container">
+    <h2 style="text-align: center; margin-bottom: 40px;">Este workshop é para você?</h2>
+    <div class="qualify-grid">
+      <div>
+        <p class="qualify-title" style="color: var(--gold);">✦ É para você se</p>
+        <ul class="qualify-list yes">
+          <li>Você já tentou afirmações, vision board e meditações — sem resultado real</li>
+          <li>Você fecha os olhos para visualizar e não vê nada, ou o que vê some em segundos</li>
+          <li>Você acredita que tem um potencial enorme, mas não sabe como acessá-lo</li>
+          <li>Você quer entender a ciência por trás da manifestação, não só teoria</li>
+          <li>Você está pronto para fazer o trabalho interno necessário</li>
+          <li>Você sente que está estagnado e quer assumir o controle da sua realidade</li>
+        </ul>
+      </div>
+      <div>
+        <p class="qualify-title" style="color: #444;">✕ Não é para você se</p>
+        <ul class="qualify-list no">
+          <li>Você busca uma fórmula mágica sem comprometimento da sua parte</li>
+          <li>Você não está disposto a olhar para dentro e fazer o trabalho interno</li>
+          <li>Você quer continuar culpando circunstâncias externas pela sua situação</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section-dark">
+  <div class="container">
+    <h2 style="text-align: center; margin-bottom: 40px;">Perguntas frequentes</h2>
+    <details>
+      <summary>Preciso ter experiência com visualização ou Lei da Atração?</summary>
+      <p>Não. O workshop foi criado especificamente para quem nunca conseguiu visualizar. As ferramentas são ensinadas do zero, com exercícios guiados ao vivo. Se você nunca viu nada quando fecha os olhos, você é exatamente quem este workshop foi criado para atender.</p>
+    </details>
+    <details>
+      <summary>E se eu não conseguir assistir ao vivo em um dos dias?</summary>
+      <p>O workshop é 100% ao vivo e não há gravação disponível. Recomendamos fortemente que você organize sua agenda para as duas noites — é onde a transformação acontece, em tempo real, com o grupo.</p>
+    </details>
+    <details>
+      <summary>Existe garantia?</summary>
+      <p>Sim. 7 dias de garantia incondicional. Se participar das 2 noites e sentir que não valeu, basta enviar um email e devolvemos 100% do investimento, sem perguntas.</p>
+    </details>
+    <details>
+      <summary>Como vou acessar o workshop ao vivo?</summary>
+      <p>Após a compra, você recebe o link de acesso por email e é adicionado ao grupo exclusivo no WhatsApp com todos os materiais complementares.</p>
+    </details>
+    <details>
+      <summary>Por que as vagas são limitadas?</summary>
+      <p>O formato ao vivo com exercícios guiados exige um número controlado de participantes para garantir a qualidade da experiência de cada pessoa. Quando as vagas esgotarem, a página fecha.</p>
+    </details>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="section-card final-cta">
+  <div class="container">
+    <p class="divider" style="padding: 0; margin-bottom: 28px;">✦ ✦ ✦</p>
+    <h2>Sua nova realidade começa com uma imagem.</h2>
+    <p style="font-size: 1.05rem; margin: 20px 0 36px;">Você já tentou de tudo. Agora é hora de aprender a única parte que ninguém te ensinou — como ligar a tela.</p>
+    <a href="https://pay.hub.la/owSQONHEIkZtK1EPuiFN" class="cta-btn">✦ QUERO ATIVAR MINHA TELA MENTAL POR R$ 47,90 ✦</a>
+    <p class="cta-sub" style="margin-top: 16px;">08 e 09 de Junho · 19h às 23h · Ao vivo com Elainne Ourives</p>
+    <p class="cta-sub">Restam 200 vagas</p>
+    <p class="guarantee-badge" style="margin-top: 16px;">🛡️ Garantia incondicional de 7 dias · Risco zero</p>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Instituto Elainne Ourives · <a href="#">Política de Privacidade</a> · <a href="#">Termos de Uso</a></p>
+</footer>
+
+<script>
+  const TARGET = new Date('2026-06-08T19:00:00-03:00').getTime();
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tick() {
+    const diff = TARGET - Date.now();
+    if (diff <= 0) { document.getElementById('countdown').textContent = 'Evento iniciado!'; return; }
+    document.getElementById('cd-d').textContent = pad(Math.floor(diff / 86400000));
+    document.getElementById('cd-h').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+    document.getElementById('cd-m').textContent = pad(Math.floor((diff % 3600000) / 60000));
+    document.getElementById('cd-s').textContent = pad(Math.floor((diff % 60000) / 1000));
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>
